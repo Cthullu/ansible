@@ -6,11 +6,24 @@ ENV LC_ALL C.UTF-8
 
 # Update all packages
 # Install Ansible and ansible-lint
-RUN apk -U --no-cache upgrade                                       \
+# Install nice to have python packages to extend Ansible and Ansible-lint functionality
+# Install python pip to provice ARA integration
+RUN apk --update-cache                                              \
+        --no-cache                                                  \
+        upgrade                                                     \
     && apk add --no-cache                                           \
         ansible                                                     \
         ansible-lint                                                \
+        py3-dnspython                                               \
+        py3-jmespath                                                \
+        py3-netaddr                                                 \
+        py3-pip                                                     \
+        py3-xmltodict                                               \
+        yamllint                                                    \
     && rm -rf /var/cache/apk/*
+
+# Provide ARA
+RUN python3 -m pip install --upgrade --no-cache-dir ara
 
 # Create a Ansible group and user
 RUN addgroup -S ansible                                             \
@@ -26,6 +39,10 @@ VOLUME [ "/etc/ansible" ]
 
 # Switch to dedicated Ansible user
 USER ansible
+
+# TODO:
+# * Dynamicaly handle additional roles          -> entrypoint script
+# * Dynamicaly handle additional collections    -> entrypoint script
 
 # Install custom roles from the linux-system-roles namespace
 RUN ansible-galaxy install linux-system-roles.network               \
