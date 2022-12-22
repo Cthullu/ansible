@@ -33,8 +33,9 @@ RUN apk --update-cache                                              \
 RUN python3 -m pip install --upgrade --no-cache-dir ara
 
 # Create a Ansible group and user
-RUN addgroup -S ansible                                             \
-    && adduser -S -D -G ansible ansible
+# Set user- and groupID to 1500
+RUN addgroup --gid 1500 ansible                                     \
+    && adduser --uid 1500 -D -G ansible ansible
 
 # Create folder and adapt permissions
 RUN mkdir -p /etc/ansible                                           \
