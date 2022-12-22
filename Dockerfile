@@ -5,21 +5,28 @@ FROM alpine:3.17.0
 ENV LC_ALL C.UTF-8
 
 # Update all packages
-# Install Ansible and ansible-lint
-# Install nice to have python packages to extend Ansible and Ansible-lint functionality
-# Install python pip to provice ARA integration
 RUN apk --update-cache                                              \
         --no-cache                                                  \
         upgrade                                                     \
+# Install Ansible and ansible-lint
     && apk add --no-cache                                           \
         ansible                                                     \
         ansible-lint                                                \
+# Install nice to have python packages to extend Ansible and Ansible-lint functionality
+    && apk add --no-cache                                           \
         py3-dnspython                                               \
         py3-jmespath                                                \
         py3-netaddr                                                 \
-        py3-pip                                                     \
         py3-xmltodict                                               \
         yamllint                                                    \
+# Install python pip to provice ARA integration
+    && apk add --no-cache                                           \
+        py3-pip                                                     \
+# Install bind-tools, git, and openssh
+    && apk add --no-cache                                           \
+        bind-utils                                                  \
+        git                                                         \
+        openssh                                                     \
     && rm -rf /var/cache/apk/*
 
 # Provide ARA
