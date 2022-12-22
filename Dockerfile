@@ -24,7 +24,7 @@ RUN apk --update-cache                                              \
         py3-pip                                                     \
 # Install bind-tools, git, and openssh
     && apk add --no-cache                                           \
-        bind-utils                                                  \
+        bind-tools                                                  \
         git                                                         \
         openssh                                                     \
     && rm -rf /var/cache/apk/*
