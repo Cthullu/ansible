@@ -5,8 +5,8 @@ Alpine Linux. This is another image whith the goal to provide a minimal footprin
 
 ## Content of the Image
 
-In addition to the base Alpine OS and Ansible, a small number of selected Ansible roles
-and/or collections is installed.
+In addition to the base Alpine OS and Ansible and ARA, a small number of selected Ansible
+roles and/or collections is installed.
 
 Furthermore, the following packages are installed:
 
