@@ -52,12 +52,7 @@ USER ansible
 # * Dynamicaly handle additional roles          -> entrypoint script
 # * Dynamicaly handle additional collections    -> entrypoint script
 
-# Install custom roles from the linux-system-roles namespace
-RUN ansible-galaxy install linux-system-roles.network               \
-    && ansible-galaxy install linux-system-roles.crypto_policies    \
-    && ansible-galaxy install linux-system-roles.firewall           \
-    && ansible-galaxy install linux-system-roles.kdump              \
-    && ansible-galaxy install linux-system-roles.kernel_settings    \
-    && ansible-galaxy install linux-system-roles.network
+# Install fedora.linux_system_roles collection
+RUN ansible-galaxy collection install fedora.linux_system_roles
 
 WORKDIR /etc/ansible
