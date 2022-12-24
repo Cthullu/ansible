@@ -14,6 +14,7 @@ RUN apk --update-cache                                              \
         ansible-lint                                                \
 # Install nice to have python packages to extend Ansible and Ansible-lint functionality
     && apk add --no-cache                                           \
+        black                                                       \
         py3-dnspython                                               \
         py3-jmespath                                                \
         py3-netaddr                                                 \
