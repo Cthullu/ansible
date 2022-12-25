@@ -14,6 +14,13 @@ Furthermore, the following packages are installed:
 * git
 * openssh
 
+## Environment Variables
+
+By default, no ARA environment (action, callback and loopback plugins) are laoded.
+If desired, the container can be started with the environment set up to know those plugins.
+
+Therefore, pass `ACTIVATE_ARA_ENV=true` during the container invokation.
+
 ## Get the image
 
 The latest image can pulled from quay.io:
