@@ -14,3 +14,5 @@ if [[ $(ls /tmp/certs/ | wc -w) -gt 0 ]]; then
   sudo cp /tmp/certs/*.crt /usr/local/share/ca-certificates/
   sudo update-ca-certificates
 fi
+
+/usr/bin/env sh -l

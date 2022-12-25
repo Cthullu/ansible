@@ -9,6 +9,17 @@ RUN apk --update-cache                                              \
         --no-cache                                                  \
         upgrade
 
+# Install ca-certificates and sudo package to update CA store
+RUN apk add --no-cache                                              \
+        ca-certificates                                             \
+        sudo
+
+# Install bind-tools, git, and openssh
+RUN apk add --no-cache                                              \
+        bind-tools                                                  \
+        git                                                         \
+        openssh
+
 # Install Ansible and ansible-lint
 RUN apk add --no-cache                                              \
         ansible                                                     \
@@ -26,17 +37,6 @@ RUN apk add --no-cache                                              \
 # Install python pip to provide ARA integration
 RUN apk add --no-cache                                              \
         py3-pip
-
-# Install bind-tools, git, and openssh
-RUN apk add --no-cache                                              \
-        bind-tools                                                  \
-        git                                                         \
-        openssh
-
-# Install ca-certificates and sudo package to update CA store
-RUN apk add --no-cache                                              \
-        ca-certificates                                             \
-        sudo
 
 # Clear apk cache
 RUN rm -rf /var/cache/apk/*
