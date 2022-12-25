@@ -31,6 +31,7 @@ RUN apk --update-cache                                              \
     && rm -rf /var/cache/apk/*
 
 # Provide ARA
+# Should move this to be run in user context
 RUN python3 -m pip install --upgrade --no-cache-dir ara
 
 # Create a Ansible group and user
@@ -43,6 +44,12 @@ RUN mkdir -p /etc/ansible                                           \
     && chown -R ansible:ansible /etc/ansible                        \
     && chmod 0755 /etc/ansible
 
+# Copy the ara_env script
+COPY --chown=root:root ./scripts/ara_env.sh /etc/profile.d/
+
+# Adapt file permissions
+RUN chmod 0644 /etc/profile.d/ara_env.sh
+
 # Create mount points with the specified names and mark them as holding external provided volumes
 VOLUME [ "/etc/ansible" ]
 
@@ -54,6 +61,8 @@ USER ansible
 # * Dynamicaly handle additional collections    -> entrypoint script
 
 # Install fedora.linux_system_roles collection
-RUN ansible-galaxy collection install fedora.linux_system_roles
+#RUN ansible-galaxy collection install fedora.linux_system_roles
 
 WORKDIR /etc/ansible
+
+ENTRYPOINT [ "/usr/bin/env", "sh" ]
