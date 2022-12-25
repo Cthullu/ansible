@@ -63,9 +63,6 @@ RUN mkdir -p /tmp/certs                                             \
 # Create mount points with the specified names and mark them as holding external provided volumes
 VOLUME [ "/etc/ansible", "/tmp/certs" ]
 
-######
-RUN apk add --no-cache sudo openssl
-
 # Switch to dedicated Ansible user
 USER ansible
 
