@@ -30,10 +30,6 @@ RUN apk --update-cache                                              \
         openssh                                                     \
     && rm -rf /var/cache/apk/*
 
-# Provide ARA
-# Should move this to be run in user context
-RUN python3 -m pip install --upgrade --no-cache-dir ara
-
 # Create a Ansible group and user
 # Set user- and groupID to 1500
 RUN addgroup --gid 1500 ansible                                     \
@@ -49,6 +45,9 @@ VOLUME [ "/etc/ansible" ]
 
 # Switch to dedicated Ansible user
 USER ansible
+
+# Provide ARA in userspace
+RUN python3 -m pip install --user --upgrade --no-cache-dir ara
 
 # Copy the entrypoint script
 COPY --chown=ansible:ansible ./scripts/entrypoint.sh /home/ansible/entrypoint.sh
