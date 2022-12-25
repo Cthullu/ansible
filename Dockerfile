@@ -44,17 +44,17 @@ RUN mkdir -p /etc/ansible                                           \
     && chown -R ansible:ansible /etc/ansible                        \
     && chmod 0755 /etc/ansible
 
-# Copy the ara_env script
-COPY --chown=root:root ./scripts/ara_env.sh /etc/profile.d/
-
-# Adapt file permissions
-RUN chmod 0644 /etc/profile.d/ara_env.sh
-
 # Create mount points with the specified names and mark them as holding external provided volumes
 VOLUME [ "/etc/ansible" ]
 
 # Switch to dedicated Ansible user
 USER ansible
+
+# Copy the entrypoint script
+COPY --chown=ansible:ansible ./scripts/entrypoint.sh /home/ansible/entrypoint.sh
+
+# Change permissions of script to someting more reasonable
+RUN chmod 640 /home/ansible/entrypoint.sh
 
 # TODO:
 # * Dynamicaly handle additional roles          -> entrypoint script
@@ -65,4 +65,4 @@ USER ansible
 
 WORKDIR /etc/ansible
 
-ENTRYPOINT [ "/usr/bin/env", "sh" ]
+ENTRYPOINT [ "/usr/bin/env", "sh" , "/home/ansible/entrypoint.sh" ]
