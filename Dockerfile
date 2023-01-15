@@ -1,4 +1,4 @@
-# Set base base image for following commands
+# Set base image for following commands
 FROM alpine:3.17.1
 
 # Set environment variables
@@ -47,7 +47,6 @@ RUN mkdir -p /etc/ansible                                           \
     && chmod 0755 /etc/ansible
 
 # Create mount points with the specified names and mark them as holding external provided volumes
-# VOLUME [ "/etc/ansible", "/tmp/certs" ]
 VOLUME [ "/etc/ansible" ]
 
 # Switch to dedicated Ansible user
