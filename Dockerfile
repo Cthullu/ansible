@@ -1,5 +1,5 @@
 # Set base base image for following commands
-FROM alpine:3.17.0
+FROM alpine:3.17.1
 
 # Set environment variables
 ENV LC_ALL C.UTF-8
@@ -10,9 +10,9 @@ RUN apk --update-cache                                              \
         upgrade
 
 # Install ca-certificates and sudo package to update CA store
-RUN apk add --no-cache                                              \
-        ca-certificates                                             \
-        sudo
+# RUN apk add --no-cache                                              \
+#         ca-certificates                                             \
+#         sudo
 
 # Install bind-tools, git, and openssh
 RUN apk add --no-cache                                              \
@@ -47,21 +47,22 @@ RUN addgroup --gid 1500 ansible                                     \
     && adduser --uid 1500 -D -G ansible ansible
 
 # Copy sudoers configuration snippet, adapt rights and check syntax just in case
-COPY --chown=root:root ./data/sudoers /etc/sudoers.d/entryscript
-RUN chmod 0640 /etc/sudoers.d/entryscript                           \
-    && visudo -c /etc/sudoers.d/entryscript
+# COPY --chown=root:root ./data/sudoers /etc/sudoers.d/entryscript
+# RUN chmod 0640 /etc/sudoers.d/entryscript                           \
+#     && visudo -c /etc/sudoers.d/entryscript
 
 # Create Ansible folder and adapt permissions
 RUN mkdir -p /etc/ansible                                           \
     && chown -R ansible:ansible /etc/ansible                        \
     && chmod 0755 /etc/ansible
 
-RUN mkdir -p /tmp/certs                                             \
-    && chown ansible:ansible /tmp/certs                             \
-    && chmod 770 /tmp/certs
+# RUN mkdir -p /tmp/certs                                             \
+#     && chown ansible:ansible /tmp/certs                             \
+#     && chmod 770 /tmp/certs
 
 # Create mount points with the specified names and mark them as holding external provided volumes
-VOLUME [ "/etc/ansible", "/tmp/certs" ]
+# VOLUME [ "/etc/ansible", "/tmp/certs" ]
+VOLUME [ "/etc/ansible" ]
 
 # Switch to dedicated Ansible user
 USER ansible
@@ -70,10 +71,10 @@ USER ansible
 RUN python3 -m pip install --user --upgrade --no-cache-dir ara
 
 # Copy the entrypoint script
-COPY --chown=ansible:ansible ./data/entrypoint.sh /home/ansible/entrypoint.sh
+# COPY --chown=ansible:ansible ./data/entrypoint.sh /home/ansible/entrypoint.sh
 
 # Change permissions of script to someting more reasonable
-RUN chmod 640 /home/ansible/entrypoint.sh
+# RUN chmod 640 /home/ansible/entrypoint.sh
 
 # TODO:
 # * Dynamicaly handle additional roles          -> entrypoint script
@@ -82,6 +83,22 @@ RUN chmod 640 /home/ansible/entrypoint.sh
 # Install fedora.linux_system_roles collection
 RUN ansible-galaxy collection install fedora.linux_system_roles
 
+# Create user ssh config folder
+RUN mkdir /home/ansible/.ssh                                       \
+  && chown ansible:ansible /home/ansible/.ssh                      \
+  && chmod 0700 /home/ansible/.ssh
+
+# Copy the user ssh config file
+COPY --chown=ansible:ansible ./data/ssh_config /home/ansible/.ssh/config
+
+# Adapt ssh config file permissions
+RUN chmod 0600 /home/ansible/.ssh/config
+
+# Disable git ssl verify
+# (Ugly, but avoid errors if e.g., self signed ssl certs in chain)
+ENV GIT_SSL_NO_VERIFY=true
+
 WORKDIR /etc/ansible
 
-ENTRYPOINT [ "/usr/bin/env", "sh" , "/home/ansible/entrypoint.sh" ]
+# ENTRYPOINT [ "/usr/bin/env", "sh" , "/home/ansible/entrypoint.sh" ]
+CMD [ "sleep", "infinity" ]
