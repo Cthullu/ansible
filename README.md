@@ -61,10 +61,10 @@ moment I am going to use the bash instead.
 
 ## Changes made with 6.6.0-b5
 
-Since I managed to get the environment set with the Alpine Linux defualt shell, I moved away
-from bash again. Still, the custom certificate support is missing, but I'm starting to get
-closer to understanding the behaviour of Alpine Linux, so I expect the feature to come again
-in one of the next releases.
+I moved away from bash again since I managed to get the environment set with the Alpine
+Linux default shell. Still, the custom certificate support is missing, but I'm starting to
+get closer to understanding the behaviour of Alpine Linux, so I expect the feature to come
+again in one of the next releases.
 
 ## Roadmap
 
