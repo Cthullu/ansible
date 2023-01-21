@@ -59,6 +59,26 @@ this may conflict with the basic idea of the image (a minimal and slim container
 just Ansible), I encountered various challenges trying to use the default shell. So for the
 moment I am going to use the bash instead.
 
+## Changes made with 6.6.0-b5
+
+I moved away from bash again since I managed to get the environment set with the Alpine
+Linux default shell. Still, the custom certificate support is missing, but I'm starting to
+get closer to understanding the behaviour of Alpine Linux, so I expect the feature to come
+again in one of the next releases.
+
+## Roadmap
+
+Well, with the release of `6.6.0-b5` I am somehow close to my original goal. As of now,
+there are only two things left on my roadmap for this container project, which I wanted to
+share:
+
+* Custom CA certificate support
+* Handling of additional Ansible roles and collections
+
+As you most likely noticed, there is no date next to any of this features. This is simply
+due to the fact that I work on this project entirely in my free time, so features and new
+releases come as I get to work on them.
+
 ## Get the image
 
 The latest image can pulled from quay.io:
@@ -75,4 +95,4 @@ To make use of the Ansible provided by the image, I personally use two steps:
 
 2. Attach to the running container, activating ARA
 
-        podman exec -it -e ACTIVATE_ARA_ENV=true ansible /bin/bash
+        podman exec -it -e ACTIVATE_ARA_ENV=true ansible sh --login
