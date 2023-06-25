@@ -60,7 +60,8 @@ COPY --chown=ansible:ansible ./data/ssh_config /home/ansible/.ssh/config
 # Adapt ssh config file permissions
 RUN chmod 0600 /home/ansible/.ssh/config
 
-RUN echo "$export PS1='[\h:\w]$ '" >> ~/.bashrc
+RUN echo "export PS1='[\h:\w]$ '" >> ~/.bashrc &&
+    echo "alias ll='ls -lah' >> ~/.bashrc
 
 WORKDIR /etc/ansible
 
