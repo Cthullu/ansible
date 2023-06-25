@@ -60,6 +60,8 @@ COPY --chown=ansible:ansible ./data/ssh_config /home/ansible/.ssh/config
 # Adapt ssh config file permissions
 RUN chmod 0600 /home/ansible/.ssh/config
 
+RUN echo "$export PS1='[\h:\w]$ '" >> ~/.bashrc
+
 WORKDIR /etc/ansible
 
 CMD [ "sleep", "infinity" ]
