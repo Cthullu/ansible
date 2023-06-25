@@ -1,5 +1,5 @@
 # Set base image for following commands
-FROM alpine:3.17.1
+FROM alpine:3.18.2
 
 # Set environment variables
 ENV LC_ALL C.UTF-8
@@ -29,10 +29,6 @@ RUN apk add --no-cache                                              \
         py3-xmltodict                                               \
         yamllint
 
-# Install python pip to provide ARA integration
-RUN apk add --no-cache                                              \
-        py3-pip
-
 # Clear apk cache
 RUN rm -rf /var/cache/apk/*
 
@@ -46,27 +42,11 @@ RUN mkdir -p /etc/ansible                                           \
     && chown -R ansible:ansible /etc/ansible                        \
     && chmod 0755 /etc/ansible
 
-# Copy profile.d scripts
-COPY --chown=root:root ./data/profile.d /etc/profile.d/
-
-# Ensure 0644 are set as permissions for profile.d scripts
-RUN chmod 0644 /etc/profile.d/*
-
 # Create mount points with the specified names and mark them as holding external provided volumes
 VOLUME [ "/etc/ansible" ]
 
 # Switch to dedicated Ansible user
 USER ansible
-
-# Provide ARA in userspace
-RUN python3 -m pip install --user --upgrade --no-cache-dir ara
-
-# TODO:
-# * Dynamicaly handle additional roles          -> entrypoint script
-# * Dynamicaly handle additional collections    -> entrypoint script
-
-# Install fedora.linux_system_roles collection
-RUN ansible-galaxy collection install fedora.linux_system_roles
 
 # Create user ssh config folder
 RUN mkdir /home/ansible/.ssh                                       \
@@ -78,10 +58,6 @@ COPY --chown=ansible:ansible ./data/ssh_config /home/ansible/.ssh/config
 
 # Adapt ssh config file permissions
 RUN chmod 0600 /home/ansible/.ssh/config
-
-# Disable git ssl verify
-# (Ugly, but avoid errors if e.g., self signed ssl certs in chain)
-ENV GIT_SSL_NO_VERIFY=true
 
 WORKDIR /etc/ansible
 
