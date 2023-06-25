@@ -36,7 +36,7 @@ RUN rm -rf /var/cache/apk/*
 # Create a Ansible group and user
 # Set user- and groupID to 1500
 RUN addgroup --gid 1500 ansible                                     \
-    && adduser --uid 1500 -D -G ansible ansible
+    && adduser -s /bin/bash -G ansible -D -u 1500 ansible
 
 # Create Ansible folder and adapt permissions
 RUN mkdir -p /etc/ansible                                           \
