@@ -1,5 +1,5 @@
 # Set base image for following commands
-FROM alpine:3.18.2
+FROM alpine:edge
 
 # Set environment variables
 ENV LC_ALL C.UTF-8
@@ -9,11 +9,12 @@ RUN apk --update-cache                                              \
         --no-cache                                                  \
         upgrade
 
-# Install bind-tools, git, and openssh
+# Install bind-tools, git, openssh and bash
 RUN apk add --no-cache                                              \
         bind-tools                                                  \
         git                                                         \
-        openssh
+        openssh                                                     \
+        bash
 
 # Install Ansible and ansible-lint
 RUN apk add --no-cache                                              \
