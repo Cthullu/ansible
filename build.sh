@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION=7.5.0-b1
+VERSION=0.1.0
 
 podman build \
 --force-rm \
