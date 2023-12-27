@@ -4,6 +4,13 @@ This repository contains the Dockerfile to build a small Ansible container image
 based on Alpine Linux. This is another image whith the goal to provide a minimal
 footprint container.
 
+## Update 2023-12-27
+
+Today I decided to archive this project.
+
+This means that there will be no further maintenance of existing versions or new
+versions released.
+
 ## Content of the Image
 
 In addition to the base Alpine OS and Ansible and ARA (client), the Ansible
